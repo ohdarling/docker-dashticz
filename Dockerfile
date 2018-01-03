@@ -4,6 +4,9 @@ FROM alpine:latest
 
 RUN apk add --no-cache nginx git
 RUN mkdir -p /var/www && cd /var/www && git clone https://github.com/robgeerts/dashticz_v2 --depth=1 dashticz
-RUN mkdir -p /tmp && echo "cd /var/www/dashticz && git pull && mkdir -p /usr/share/nginx/html/ && cp -R * /usr/share/nginx/html/ && read name" > /tmp/start.sh
+ADD root /
+RUN mkdir -p /tmp && mkdir -p /run/nginx && echo "cd /var/www/dashticz && git pull && nginx && read name" > /tmp/start.sh
+
+EXPOSE 80
 
 ENTRYPOINT ["/bin/sh", "/tmp/start.sh"]
